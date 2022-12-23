@@ -1,6 +1,14 @@
 #include "chess.hpp"
 #include <iostream>
 
+/******************************************************************************
+*******************************************************************************
+**                                                                           **
+**                                FUNCTIONS                                  **
+**                                                                           **
+*******************************************************************************
+******************************************************************************/
+
 int piece::get_id(){
   return id;
 }
@@ -12,6 +20,17 @@ int piece::set_colour(piece_colour col){
 
 int piece::get_colour(){
   return colour;
+}
+
+piece_type piece::get_type(){
+  return type;
+}
+
+vec2 piece::get_pos(){
+  vec2 pos;
+  pos.x = x_pos;
+  pos.y = y_pos;
+  return pos; 
 }
 
 int piece::move(int x, int y){ //finish later maybe
@@ -32,6 +51,50 @@ int piece::move(int x, int y){ //finish later maybe
   return -1;
 }
 
+int print_board(){
+  char board_row[8];
+  for (size_t y = 0; y < 8; y++){
+    for (size_t x = 0; x < 8; x++){
+      switch (board[x][y]->get_type()){
+        case paw:
+          board_row[x] = *"p";
+          break;
+
+        case bis:
+          board_row[x] = *"b";
+          break;
+
+        case kni:
+          board_row[x] = *"h";
+          break;
+
+        case que:
+          board_row[x] = *"q";
+          break;
+
+        case kin:
+          board_row[x] = *"k";
+          break;
+        
+        case nun:
+          board_row[x] = *"x";
+          break;
+      }
+    }
+
+    for (size_t i = 0; i < 8; i++){
+      std::cout << board_row[i];
+    }
+    std::cout<<"\n";
+  }
+  return 1;
+}
+
+int set_piece(piece piece){
+  board[piece.get_pos().x][piece.get_pos().y] = &piece;
+  return 1;
+}
+
 
 /******************************************************************************
 *******************************************************************************
@@ -46,12 +109,13 @@ piece::piece(){
   colour = gray;
   x_pos = 0;
   y_pos = 0;
+  type = nun;
 }
 pawn::pawn(piece_colour col, int x, int y){
   colour = col;
   x_pos = x;
   y_pos = y;
-  board[x][y] = this;
+  type = paw;
 }
 
 /******************************************************************************
@@ -121,7 +185,6 @@ int pawn::check_moves(){
     case gray:
         return -1;
   }
-  std::cout << "Moves:" << move_count << '\n';
   return 1;
 }
 
@@ -422,31 +485,47 @@ int king::check_moves(){
   return 1;
 }
 int main(int argc, char const *argv[]) {
+  piece blank_piece = piece();
   for (int i = 0; i < 8; i++) {
     for (int j = 0; j < 8; j++) {
-      piece new_piece = piece();
-      board[i][j] = &new_piece;
-
+      board[i][j] = &blank_piece;
     }
   }
-
+  pawn bp0(black, 0, 6);
+  set_piece(bp0);
   pawn bp1(black, 1, 6);
+  set_piece(bp1);
   pawn bp2(black, 2, 6);
+  set_piece(bp2);
   pawn bp3(black, 3, 6);
+  set_piece(bp3);
   pawn bp4(black, 4, 6);
+  set_piece(bp4);
   pawn bp5(black, 5, 6);
+  set_piece(bp5);
   pawn bp6(black, 6, 6);
+  set_piece(bp6);
   pawn bp7(black, 7, 6);
-  pawn bp8(black, 8, 6);
-
+  set_piece(bp7);
+ 
+  pawn wp0(white, 0, 1);
+  set_piece(wp0);
   pawn wp1(white, 1, 1);
+  set_piece(wp1);
   pawn wp2(white, 2, 1);
+  set_piece(wp2);
   pawn wp3(white, 3, 1);
+  set_piece(wp3);
   pawn wp4(white, 4, 1);
+  set_piece(wp4);
   pawn wp5(white, 5, 1);
+  set_piece(wp5);
   pawn wp6(white, 6, 1);
+  set_piece(wp6);
   pawn wp7(white, 7, 1);
-  pawn wp8(white, 8, 1);
+  set_piece(wp7);
+  
   wp2.check_moves();
+  print_board();
   return 0;
 }

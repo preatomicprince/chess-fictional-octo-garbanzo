@@ -8,9 +8,18 @@ enum piece_colour {white,
             black,
             gray};
 
+enum piece_type {paw,
+                roo,
+                bis,
+                kni,
+                que,
+                kin,
+                nun};
+
 class piece{
 protected:
   int id;
+  piece_type type;
   piece_colour colour;
   int x_pos;
   int y_pos;
@@ -25,6 +34,7 @@ public:
   int get_colour();
   vec2 get_pos();
   int set_pos(int x, int y);
+  piece_type get_type();
 };
 
 class pawn: public piece{
@@ -66,6 +76,10 @@ piece *black_pieces[16];
 int assign_team(piece *this_piece);
 
 int set_up_piece(piece *this_piece);
+
+int print_board();
+
+int set_piece(piece piece);
 
 
 
